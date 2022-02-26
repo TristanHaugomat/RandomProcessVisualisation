@@ -12,7 +12,7 @@ URL = 'http://127.0.0.1:5000/'
 
 @st.cache
 def run_api():
-    subprocess.Popen('flask run')
+    subprocess.Popen(['python', 'app.py'])
 
 
 @st.cache
