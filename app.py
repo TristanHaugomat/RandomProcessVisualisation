@@ -25,8 +25,24 @@ def brownian():
 
     t = np.linspace(0, stop_time, SAMPLE_LEN)
     dt = d(t)
-    dx = np.random.normal(drift * dt, np.sqrt(std * dt))
+    dx = np.random.normal(drift * dt, std * np.sqrt(dt))
     x = I(dx)
+    return jsonify({'time': list(t), 'process': list(x)})
+
+
+@app.route('/ornstein_uhlenbeck')
+def ornstein_uhlenbeck():
+    stop_time = float(request.args.get('stop_time'))
+    std = float(request.args.get('std'))
+    reverting = float(request.args.get('reverting'))
+
+    t = np.linspace(0, stop_time, SAMPLE_LEN)
+    dt = d(t)
+    random_part = np.random.normal(scale=std * np.sqrt((1 - np.exp(-2 * reverting * dt)) / 2 / reverting))
+    x = np.empty_like(t)
+    x[0] = np.random.normal(scale=std / np.sqrt(2 * reverting))
+    for i in range(0, SAMPLE_LEN - 1):
+        x[i + 1] = x[i] * np.exp(-reverting * dt[i]) + random_part[i]
     return jsonify({'time': list(t), 'process': list(x)})
 
 
@@ -52,6 +68,25 @@ def poisson():
     dt = d(t)
     dx = np.random.poisson(intensity * dt)
     x = I(dx).astype(float)
+    return jsonify({'time': list(t), 'process': list(x)})
+
+
+@app.route('/stable')
+def stable():
+    stop_time = float(request.args.get('stop_time'))
+    stability = float(request.args.get('stability'))
+    drift = float(request.args.get('drift'))
+    positive_noise = float(request.args.get('positive_noise'))
+    negative_noise = float(request.args.get('negative_noise'))
+
+    t = np.linspace(0, stop_time, SAMPLE_LEN)
+    dt = d(t)
+    dx = (dt / np.random.rand(SAMPLE_LEN - 1)) ** (1 / stability) * positive_noise - \
+         (dt / np.random.rand(SAMPLE_LEN - 1)) ** (1 / stability) * negative_noise + \
+         drift * dt
+    if stability > 1:
+        dx += stability / (stability - 1) * (negative_noise - positive_noise) * dt ** (1 / stability)
+    x = I(dx)
     return jsonify({'time': list(t), 'process': list(x)})
 
 
