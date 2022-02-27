@@ -63,3 +63,6 @@ df = pd.DataFrame(requests.get(f'{URL}/{end_point}', params=params).json())
 fig, ax = plt.subplots()
 ax.plot(df['time'], df['process'])
 st.pyplot(fig)
+
+st.markdown('GitHub repository : [https://github.com/TristanHaugomat/RandomProcessVisualisation]'
+            '(https://github.com/TristanHaugomat/RandomProcessVisualisation)')
