@@ -1,5 +1,6 @@
 import decimal
 import subprocess
+import sys
 
 import numpy as np
 import pandas as pd
@@ -7,12 +8,12 @@ import matplotlib.pyplot as plt
 import requests
 import streamlit as st
 
-URL = 'http://34.127.33.101:5000/'
+URL = 'http://127.0.0.1:5000/'
 
 
 @st.cache
 def run_api():
-    subprocess.Popen(['python', 'app.py'])
+    subprocess.Popen([sys.executable, 'app.py'])
 
 
 @st.cache
