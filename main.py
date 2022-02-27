@@ -22,7 +22,7 @@ def decibel_scale(m, M):
             for n in range(round(10 * np.log10(m)), round(10 * np.log10(M)) + 1)]
 
 
-# run_api()
+run_api()
 params = {}
 
 process_name = st.sidebar.selectbox('', (
