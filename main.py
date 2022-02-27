@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import requests
 import streamlit as st
 
-URL = 'http://127.0.0.1:5000/'
+URL = 'http://34.127.33.101:5000/'
 
 
 @st.cache
