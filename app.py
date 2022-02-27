@@ -90,5 +90,17 @@ def stable():
     return jsonify({'time': list(t), 'process': list(x)})
 
 
+@app.route('/fractional_brownian')
+def fractional_brownian():
+    alpha = float(request.args.get('alpha'))
+
+    t = np.linspace(0, 1, SAMPLE_LEN)
+    x = np.random.normal(size=SAMPLE_LEN - 1) + 1j * np.random.normal(size=SAMPLE_LEN - 1)
+    x *= np.arange(1, SAMPLE_LEN) ** (-.5 - alpha)
+    x = np.concatenate(([0], x))
+    x = np.fft.fft(x).real
+    return jsonify({'time': list(t), 'process': list(x)})
+
+
 if __name__ == '__main__':
     app.run(debug=True)

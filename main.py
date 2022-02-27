@@ -26,11 +26,13 @@ run_api()
 params = {}
 
 process_name = st.sidebar.selectbox('', (
-    'Brownian motion', 'Ornstein Uhlenbeck', 'Poisson process', 'Cauchy process', 'Stable process'
+    'Brownian motion', 'Ornstein Uhlenbeck', 'Poisson process', 'Cauchy process', 'Stable process',
+    'Fractional brownian bridge'
 ))
-st.sidebar.button('Reload')
+if process_name != 'Fractional brownian bridge':
+    params['stop_time'] = st.sidebar.select_slider('Maximum time', list(decibel_scale(.1, 100)), 1)
 
-params['stop_time'] = st.sidebar.select_slider('Maximum time', list(decibel_scale(.1, 100)), 1)
+st.sidebar.button('Reload')
 
 if process_name == 'Brownian motion':
     params['drift'] = st.sidebar.slider('Drift', -10., 10., 0., .1)
@@ -57,6 +59,10 @@ elif process_name == 'Stable process':
     params['positive_noise'] = st.sidebar.slider('Positive noise', 0., 5., 1., .1)
     params['negative_noise'] = st.sidebar.slider('Negative noise', 0., 5., 1., .1)
     end_point = 'stable'
+
+elif process_name == 'Fractional brownian bridge':
+    params['alpha'] = st.sidebar.slider('Alpha', .1, .9, .5, .1)
+    end_point = 'fractional_brownian'
 
 st.title(process_name)
 df = pd.DataFrame(requests.get(f'{URL}/{end_point}', params=params).json())
