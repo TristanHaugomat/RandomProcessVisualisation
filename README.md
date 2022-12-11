@@ -7,10 +7,10 @@ The app is deployed here:
 ## Description
 
 * The file `app.py` contain the Flask API.
-* The file `main.py` run the streamlite app and is call by streamlite cloud.
+* The file `main.py` run the streamlite app and is called by streamlite cloud.
 * The `requirement.txt` is used by the streamlite cloud to setup the python environment.
 
-The main blocking point is the running of the Flask app inn the cloud. This is done by
+The main blocking point is the running of the Flask app in the cloud. This is done by
 
 ```
 @st.cache
@@ -23,7 +23,7 @@ Use `@st.cache` to run the Flask app only one time,
 `subprocess.Popen` to execute a bash command and `sys.executable` to obtain the path of python executable (you don't
 know the cloud setup).
 
-In local, you can comment `run_api()` and run it in other way for mare interactivity.
+In local, you can comment `run_api()` and run it in other way for more interactivity.
 
 ## The very useful docs
 
